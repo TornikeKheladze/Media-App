@@ -1,18 +1,18 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import React, { useEffect, useState } from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../App";
 
-const Home = () => {
-  const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    // setLoading(true);
-    // getPopularVideos()
-    //   .then((res) => console.log(res))
-    //   .finally(() => setLoading(false));
-  }, []);
-  console.log(loading);
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
+
+const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <View>
       <Text>Home</Text>
+      <Button
+        title="Videos"
+        onPress={() => navigation.navigate("PexelsVideos")}
+      />
     </View>
   );
 };
