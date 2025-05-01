@@ -1,3 +1,11 @@
+export type VideoType = {
+  id: number;
+  width: number;
+  height: number;
+  url: string;
+  image: string;
+};
+
 export type PexelsVideoResponse = {
   page: number;
   per_page: number;

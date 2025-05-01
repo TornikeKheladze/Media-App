@@ -1,23 +1,34 @@
 import { useEvent } from "expo";
 import { useVideoPlayer, VideoView } from "expo-video";
-import { Video } from "pexels";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Image,
   Dimensions,
+  Text,
 } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { addVideo } from "../../storage/storage";
+import { VideoType } from "../../types/types";
 
 type VideoItemProps = {
-  video: Video;
+  video: VideoType;
+  setVideoPlayingId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  videoPlayingId: number | undefined;
+  actionBtn: React.ReactNode;
 };
 
-const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
+const VideoItem: React.FC<VideoItemProps> = ({
+  video,
+  setVideoPlayingId,
+  videoPlayingId,
+  actionBtn,
+}) => {
   const [isVideo, setIsVideo] = useState(false);
 
-  const player = useVideoPlayer(video.video_files[0].link, (player) => {
+  const player = useVideoPlayer(video.url, (player) => {
     player.loop = true;
   });
 
@@ -34,20 +45,24 @@ const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
   const height = width * ratio;
 
   const handlePress = () => {
+    setVideoPlayingId(video.id);
     if (!isVideo) {
       setIsVideo(true);
       player.play();
-    } else {
-      if (isPlaying) {
-        player.pause();
-      } else {
-        player.play();
-      }
     }
   };
 
+  useEffect(() => {
+    if (isPlaying) {
+      if (videoPlayingId !== video.id) {
+        player.pause();
+      }
+    }
+  }, [videoPlayingId]);
+
   return (
     <View style={{ width, height, marginTop: 10 }}>
+      {actionBtn}
       {!isVideo ? (
         <TouchableOpacity activeOpacity={0.9} onPress={handlePress}>
           <Image

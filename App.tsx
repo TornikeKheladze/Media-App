@@ -4,12 +4,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./src/screens/Home/Home";
 import { NavigationContainer } from "@react-navigation/native";
 import PexelsVideos from "./src/screens/PexelsVideos/PexelsVideos";
+import SavedVideos from "./src/screens/SavedVideos/SavedVideos";
 
 const queryClient = new QueryClient();
 
 export type RootStackParamList = {
   Home: undefined;
   PexelsVideos: undefined;
+  SavedVideos: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -21,6 +23,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="PexelsVideos" component={PexelsVideos} />
+          <Stack.Screen name="SavedVideos" component={SavedVideos} />
         </Stack.Navigator>
       </NavigationContainer>
     </QueryClientProvider>

@@ -1,13 +1,22 @@
-import { View, Text, TextInput, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
 import VideoItem from "../../components/Video/VideoItem";
 import { InfiniteData, useInfiniteQuery } from "@tanstack/react-query";
 import { searchVideos } from "../../services/pexels";
-import { Video, Videos } from "pexels";
+import { Videos } from "pexels";
 import { MasonryFlashList } from "@shopify/flash-list";
 import { useDebounce } from "../../hooks/useDebounce";
+import { VideoType } from "../../types/types";
+import { addVideo } from "../../storage/storage";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 type PexelsVideosScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -16,6 +25,7 @@ type PexelsVideosScreenProps = NativeStackScreenProps<
 
 const PexelsVideos: React.FC<PexelsVideosScreenProps> = () => {
   const [searchText, setSearchText] = useState("trend");
+  const [videoPlayingId, setVideoPlayingId] = useState<number | undefined>();
 
   const debouncedSearch = useDebounce(searchText, 500);
 
@@ -46,14 +56,22 @@ const PexelsVideos: React.FC<PexelsVideosScreenProps> = () => {
     initialPageParam: 1,
   });
 
-  const videos: Video[] = data?.pages.flatMap((page) => page.videos) ?? [];
+  const videos: VideoType[] =
+    data?.pages.flatMap((page) =>
+      page.videos.map((v) => ({
+        id: v.id,
+        width: v.width,
+        height: v.height,
+        url: v.video_files[0].link,
+        image: v.image,
+      }))
+    ) ?? [];
 
   const loadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   };
-
   return (
     <View className="flex-1">
       <View className="p-3">
@@ -76,7 +94,22 @@ const PexelsVideos: React.FC<PexelsVideosScreenProps> = () => {
           data={videos}
           onEndReached={loadMore}
           numColumns={2}
-          renderItem={({ item }) => <VideoItem video={item} />}
+          renderItem={({ item }) => (
+            <VideoItem
+              video={item}
+              setVideoPlayingId={setVideoPlayingId}
+              videoPlayingId={videoPlayingId}
+              actionBtn={
+                <TouchableOpacity
+                  onPress={() => addVideo(item)}
+                  className="bg-gray-200 absolute top-1 right-1 z-10 rounded-lg p-1 flex-row items-center gap-1"
+                >
+                  <Text className="text-xs">Save</Text>
+                  <Ionicons name="download-outline" size={18} color="black" />
+                </TouchableOpacity>
+              }
+            />
+          )}
           estimatedItemSize={200}
           contentContainerStyle={{
             paddingLeft: 10,
