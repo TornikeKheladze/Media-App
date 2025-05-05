@@ -1,16 +1,35 @@
-const BASEURL = "http://localhost:3000";
+import * as DocumentPicker from "expo-document-picker";
+import * as ImagePicker from "expo-image-picker";
+import { Platform } from "react-native";
+import { UploadResponse } from "../types/types";
 
-export const storeVideoOnServer = async (mediaId: string) => {
+const localUrl = Platform.OS === "ios" ? "localhost:3000" : "10.0.2.2:3000";
+
+export const uploadFileToServer = async (
+  file: DocumentPicker.DocumentPickerAsset | ImagePicker.ImagePickerAsset
+) => {
+  const formData = new FormData();
+
+  formData.append("file", {
+    uri: file.uri,
+    name: "name" in file ? file.name : file.fileName || "upload-file",
+    type: file.mimeType || "video/mp4",
+  } as any);
+
   try {
-    const response = await fetch(`${BASEURL}/download/${mediaId}`);
+    const response = await fetch(`http://${localUrl}/upload`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      body: formData,
+    });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Video uploaded successfully:", data);
-    } else {
-      console.error("Failed to upload video:", response.statusText);
-    }
-  } catch (error) {
-    console.error("Error uploading video:", error);
+    const data: UploadResponse = await response.json();
+
+    console.log("Upload successful:", data);
+    return data;
+  } catch (err) {
+    console.log(" Upload error:", err);
   }
 };

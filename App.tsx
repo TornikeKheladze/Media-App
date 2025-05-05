@@ -1,3 +1,7 @@
+if (__DEV__) {
+  require("./ReactotronConfig");
+}
+
 import "./global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

@@ -44,3 +44,8 @@ export type PexelsVideoPicture = {
   picture: string;
   nr: number;
 };
+
+export type UploadResponse = {
+  filePath: string;
+  message: string;
+};

@@ -15,14 +15,12 @@ type SavedVideosScreenProps = NativeStackScreenProps<
 const SavedVideos: React.FC<SavedVideosScreenProps> = ({ navigation }) => {
   const [videos, setVideos] = useState([...getallVideos()]);
   const [videoPlayingId, setVideoPlayingId] = useState<number | undefined>();
-
   return (
     <View className="flex-1">
       {videos.length === 0 ? (
         <Text className="p-4">Videos Not Found</Text>
       ) : (
         <MasonryFlashList
-          // ref={listRef}
           data={videos}
           numColumns={2}
           renderItem={({ item }) => (
@@ -48,7 +46,6 @@ const SavedVideos: React.FC<SavedVideosScreenProps> = ({ navigation }) => {
           contentContainerStyle={{
             paddingLeft: 10,
           }}
-          // extraData={favourites}
           onEndReachedThreshold={0.5}
         />
       )}

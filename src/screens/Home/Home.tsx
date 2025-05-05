@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
 import { getallVideos } from "../../storage/storage";
 import UploadScreen from "../../components/UploadFile/UploadFile";
+import UploadAudio from "../../components/UploadFile/UploadAudio";
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
@@ -19,13 +20,8 @@ const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
         title="Saved Videos"
         onPress={() => navigation.navigate("SavedVideos")}
       />
-      {/* <UploadScreen />
-      <Button
-        title="download an save"
-        onPress={() => {
-          fetch("http://localhost:3000/download/31794148");
-        }}
-      /> */}
+      <UploadScreen />
+      <UploadAudio />
     </View>
   );
 };
