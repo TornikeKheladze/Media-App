@@ -3,8 +3,7 @@ import React from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { VideoType } from "../../types/types";
 import { addVideo } from "../../storage/storage";
-
-import VideoDownloader from "../../components/Downloader/Downloader";
+import VideoDownloader from "../../components/VideoDownloader/VideoDownloader";
 
 const ActionButtons: React.FC<{ item: VideoType }> = ({ item }) => {
   return (

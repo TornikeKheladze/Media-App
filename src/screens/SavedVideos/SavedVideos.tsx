@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
@@ -6,7 +6,7 @@ import { getallVideos, removeVideo } from "../../storage/storage";
 import { MasonryFlashList } from "@shopify/flash-list";
 import VideoItem from "../../components/Video/VideoItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import VideoDownloader from "../../components/Downloader/Downloader";
+import VideoDownloader from "../../components/VideoDownloader/VideoDownloader";
 
 type SavedVideosScreenProps = NativeStackScreenProps<
   RootStackParamList,
