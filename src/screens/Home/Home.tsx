@@ -20,6 +20,10 @@ const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
         title="Saved Videos"
         onPress={() => navigation.navigate("SavedVideos")}
       />
+      <Button
+        title="Saved Audios"
+        onPress={() => navigation.navigate("SavedAudios")}
+      />
       <UploadScreen />
       <UploadAudio />
     </View>

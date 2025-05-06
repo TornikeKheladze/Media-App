@@ -9,10 +9,10 @@ export const uploadFileToServer = async (
   file: DocumentPicker.DocumentPickerAsset | ImagePicker.ImagePickerAsset
 ) => {
   const formData = new FormData();
-
+  const name = "name" in file ? file.name : file.fileName || "upload-file";
   formData.append("file", {
     uri: file.uri,
-    name: "name" in file ? file.name : file.fileName || "upload-file",
+    name,
     type: file.mimeType || "video/mp4",
   } as any);
 
@@ -27,8 +27,8 @@ export const uploadFileToServer = async (
 
     const data: UploadResponse = await response.json();
 
-    console.log("Upload successful:", data);
-    return data;
+    console.log("Upload successful:", { ...data, name });
+    return { ...data, name };
   } catch (err) {
     console.log(" Upload error:", err);
   }

@@ -2,6 +2,7 @@ import { View, Text, Button } from "react-native";
 import React from "react";
 import * as DocumentPicker from "expo-document-picker";
 import { uploadFileToServer } from "../../services/api";
+import { addAudio } from "../../storage/storage";
 
 const UploadAudio = () => {
   const pickDocument = async () => {
@@ -12,8 +13,14 @@ const UploadAudio = () => {
 
     if (result.canceled || !result.assets?.length) return;
     const file = result.assets[0];
-
-    uploadFileToServer(file);
+    const res = await uploadFileToServer(file);
+    if (res) {
+      addAudio({
+        id: Math.random(),
+        name: res.name,
+        url: res.filePath,
+      });
+    }
   };
   return (
     <View>

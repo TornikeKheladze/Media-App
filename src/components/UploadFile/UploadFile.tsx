@@ -1,4 +1,3 @@
-// UploadScreen.tsx
 import React from "react";
 import { Button, View, Alert, Image } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -24,7 +23,6 @@ export default function UploadScreen() {
         }
       );
       const fileResponse = await uploadFileToServer(file);
-      console.log(fileResponse);
       if (fileResponse) {
         addVideo({
           height: file.height,
