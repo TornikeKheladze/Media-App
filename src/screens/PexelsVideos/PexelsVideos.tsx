@@ -17,6 +17,7 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { VideoType } from "../../types/types";
 import { addVideo } from "../../storage/storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import ActionButtons from "./ActionButtons";
 
 type PexelsVideosScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -90,7 +91,6 @@ const PexelsVideos: React.FC<PexelsVideosScreenProps> = () => {
         <Text className="p-4">Videos Not Found</Text>
       ) : (
         <MasonryFlashList
-          // ref={listRef}
           data={videos}
           onEndReached={loadMore}
           numColumns={2}
@@ -99,22 +99,13 @@ const PexelsVideos: React.FC<PexelsVideosScreenProps> = () => {
               video={item}
               setVideoPlayingId={setVideoPlayingId}
               videoPlayingId={videoPlayingId}
-              actionBtn={
-                <TouchableOpacity
-                  onPress={() => addVideo(item)}
-                  className="bg-gray-200 absolute top-1 right-1 z-10 rounded-lg p-1 flex-row items-center gap-1"
-                >
-                  <Text className="text-xs">Save</Text>
-                  <Ionicons name="download-outline" size={18} color="black" />
-                </TouchableOpacity>
-              }
+              actionBtn={<ActionButtons item={item} />}
             />
           )}
           estimatedItemSize={200}
           contentContainerStyle={{
             paddingLeft: 10,
           }}
-          // extraData={favourites}
           onEndReachedThreshold={0.5}
         />
       )}

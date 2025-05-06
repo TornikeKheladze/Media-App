@@ -1,8 +1,9 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { AudioType } from "../../types/types";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { ProgressBar } from "react-native-paper";
 
 type AudioItemProps = {
   audio: AudioType;
@@ -31,9 +32,18 @@ const AudioItem: React.FC<AudioItemProps> = ({
     }
   }, [audioPlayingId]);
 
+  const progressPercentage = audioEvent.currentTime / audioEvent.duration;
   return (
-    <View className="bg-gray-200 p-3 flex-row justify-between rounded-lg">
+    <View className="bg-gray-200 p-3 flex-row justify-between rounded-lg ">
       <Text>{audio.name}</Text>
+
+      <View className="w-full absolute bottom-0">
+        <ProgressBar
+          progress={progressPercentage || 0}
+          color="green"
+          style={styles.progressBar}
+        />
+      </View>
       <View className="flex-row gap-2">
         {audioEvent.playing ? (
           <TouchableOpacity
@@ -59,5 +69,12 @@ const AudioItem: React.FC<AudioItemProps> = ({
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  progressBar: {
+    height: 8,
+    borderRadius: 12,
+  },
+});
 
 export default AudioItem;

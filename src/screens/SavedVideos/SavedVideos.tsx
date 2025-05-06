@@ -6,6 +6,7 @@ import { getallVideos, removeVideo } from "../../storage/storage";
 import { MasonryFlashList } from "@shopify/flash-list";
 import VideoItem from "../../components/Video/VideoItem";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import VideoDownloader from "../../components/Downloader/Downloader";
 
 type SavedVideosScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -29,16 +30,19 @@ const SavedVideos: React.FC<SavedVideosScreenProps> = ({ navigation }) => {
               setVideoPlayingId={setVideoPlayingId}
               videoPlayingId={videoPlayingId}
               actionBtn={
-                <TouchableOpacity
-                  onPress={() => {
-                    removeVideo(item);
-                    setVideos([...getallVideos()]);
-                  }}
-                  className="bg-gray-200 absolute top-1 right-1 z-10 rounded-lg p-1 flex-row items-center gap-1"
-                >
-                  <Text className="text-xs">Delete</Text>
-                  <Ionicons name="trash-outline" size={18} color="black" />
-                </TouchableOpacity>
+                <View className="absolute top-1 right-1 flex-row gap-1 z-50 items-center justify-center">
+                  <VideoDownloader videoUrl={item.url} />
+                  <TouchableOpacity
+                    onPress={() => {
+                      removeVideo(item);
+                      setVideos([...getallVideos()]);
+                    }}
+                    className="bg-gray-200  rounded-lg p-[2px] flex-row items-center gap-1"
+                  >
+                    <Text className="text-xs">Delete</Text>
+                    <Ionicons name="trash-outline" size={14} color="black" />
+                  </TouchableOpacity>
+                </View>
               }
             />
           )}
