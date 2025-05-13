@@ -12,7 +12,7 @@ const VideoPlayerView = ({ video, videoPlayingId }: Props) => {
   const player = useVideoPlayer(video.url, (player) => {
     player.loop = true;
   });
-
+  console.log();
   useEffect(() => {
     if (videoPlayingId === video.id) {
       player.play();
