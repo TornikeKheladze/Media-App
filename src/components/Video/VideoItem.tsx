@@ -1,17 +1,13 @@
-import { useEvent } from "expo";
-import { useVideoPlayer, VideoView } from "expo-video";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   Image,
   Dimensions,
-  Text,
 } from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { addVideo } from "../../storage/storage";
 import { VideoType } from "../../types/types";
+import VideoPlayerView from "./VideoPlayerView";
 
 type VideoItemProps = {
   video: VideoType;
@@ -19,6 +15,10 @@ type VideoItemProps = {
   videoPlayingId: number | undefined;
   actionBtn: React.ReactNode;
 };
+
+const spacing = 6;
+const windowWidth = Dimensions.get("window").width;
+const columnWidth = (windowWidth - spacing * 3) / 2;
 
 const VideoItem: React.FC<VideoItemProps> = ({
   video,
@@ -28,37 +28,14 @@ const VideoItem: React.FC<VideoItemProps> = ({
 }) => {
   const [isVideo, setIsVideo] = useState(false);
 
-  const player = useVideoPlayer(video.url, (player) => {
-    player.loop = true;
-  });
-
-  const spacing = 6;
-  const windowWidth = Dimensions.get("window").width;
-  const columnWidth = (windowWidth - spacing * 3) / 2;
-
-  const { isPlaying } = useEvent(player, "playingChange", {
-    isPlaying: player.playing,
-  });
-
   const ratio = +video.height / +video.width;
   const width = columnWidth - spacing;
   const height = width * ratio;
 
   const handlePress = () => {
     setVideoPlayingId(video.id);
-    if (!isVideo) {
-      setIsVideo(true);
-      player.play();
-    }
+    setIsVideo(true);
   };
-
-  useEffect(() => {
-    if (isPlaying) {
-      if (videoPlayingId !== video.id) {
-        player.pause();
-      }
-    }
-  }, [videoPlayingId]);
 
   return (
     <View style={{ width, height, marginTop: 10 }}>
@@ -72,12 +49,7 @@ const VideoItem: React.FC<VideoItemProps> = ({
           />
         </TouchableOpacity>
       ) : (
-        <VideoView
-          style={styles.video}
-          player={player}
-          allowsFullscreen
-          allowsPictureInPicture
-        />
+        <VideoPlayerView video={video} videoPlayingId={videoPlayingId} />
       )}
     </View>
   );

@@ -1,31 +1,45 @@
-import { View, Text, Button } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { View } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
-import { getallVideos } from "../../storage/storage";
-import UploadScreen from "../../components/UploadFile/UploadFile";
-import UploadAudio from "../../components/UploadFile/UploadAudio";
+import HomeBtn from "./HomeBtn";
+import { pickAndSaveAudio, pickVideoAndSave } from "./helpers";
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
 const Home: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
-    <View>
-      <Text>Home</Text>
-      <Button
-        title="Videos"
+    <View className="flex-1 p-4 gap-5 items-center">
+      <HomeBtn
+        color="#12CBC4"
+        iconName="videocam-outline"
+        text="Browse Videos"
         onPress={() => navigation.navigate("PexelsVideos")}
       />
-      <Button
-        title="Saved Videos"
+      <HomeBtn
+        color="#1289A7"
+        iconName="save-outline"
+        text="Saved Videos"
         onPress={() => navigation.navigate("SavedVideos")}
       />
-      <Button
-        title="Saved Audios"
+      <HomeBtn
+        color="#9980FA"
+        iconName="save-outline"
+        text="Saved Audios"
         onPress={() => navigation.navigate("SavedAudios")}
       />
-      <UploadScreen />
-      <UploadAudio />
+      <HomeBtn
+        color="#6F1E51"
+        iconName="cloud-upload-outline"
+        text="Upload Video"
+        onPress={pickVideoAndSave}
+      />
+      <HomeBtn
+        color="#EE5A24"
+        iconName="cloud-upload-outline"
+        text="Upload Audio"
+        onPress={pickAndSaveAudio}
+      />
     </View>
   );
 };
